@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>Account Login</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    {% include 'templates_includes/normal_includes/normal_header.html' %}
+
+    <main id="main">
+      <!-- ======= Breadcrumbs Section ======= -->
+      <section class="breadcrumbs">
+        <div class="container">
+          <div class="d-flex align-items-center justify-content-center">
+            <h1><strong>Sign In</strong></h1>
+          </div>
+        </div>
+      </section>
+      <!-- End Breadcrumbs Section -->
+
+      <section class="inner-page">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <!-- login_form.html -->
+              <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input
+                    type="text"
+                    class="form-control custom-form-control"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                  />
+                </div>
+                <!-- Include the password field -->
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control custom-form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                  />
+                </div>
+
+                <div class="form-check mb-3">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="rememberMe"
+                  />
+                  <label class="form-check-label" for="rememberMe"
+                    >Remember Me</label
+                  >
+                </div>
+
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+                <div class="mt-3 text-center" style="font-size: small">
+                  Don't have an account?
+                  <a
+                    href="{% url 'normal_register' %}"
+                    style="color: blue; text-decoration: underline"
+                    >Register Here</a
+                  >
+                  |
+                  <a
+                    href="{% url 'normal_forgot_password' %}"
+                    style="color: blue; text-decoration: underline"
+                    >Forgot Password?</a
+                  >
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--login form and logo template ends here-->
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+
+    {% include 'templates_includes/normal_includes/normal_footer.html' %}

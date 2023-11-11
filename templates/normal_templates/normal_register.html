@@ -1,0 +1,178 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>AgileReserveSystem Create Account</title>
+
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+        
+    <!-- where you include scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    <style>
+      #suggested-password-content {
+          display: none;
+          position: absolute;
+          border: 1px solid #ddd;
+          box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+          border-radius: 5px;
+          padding: 10px;
+          background-color: white;
+          margin-top: 10px; 
+      }
+      .arrow{
+          width: 12px;
+          height: 12px;
+          position: absolute;
+          top: -6px; 
+          left: 50%;
+          transform: translateX(-50%) rotate(45deg);
+          border: 1px solid #ddd;
+          border-bottom: none;
+          border-right: none;
+          background-color: white;
+      }
+    </style>
+    
+    {% include 'templates_includes/normal_includes/normal_header.html' %}
+
+    <main id="main">
+      <!-- ======= Breadcrumbs Section ======= -->
+      <section class="breadcrumbs">
+        <div class="container">
+          <div class="d-flex align-items-center justify-content-center">
+            <h1><strong>Sign up</strong></h1>
+          </div>
+        </div>
+      </section>
+      <!-- End Breadcrumbs Section -->
+
+      <section class="inner-page">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <!-- Register Form Section -->
+              <form method="post">
+                {% csrf_token %} 
+                <div class="row">
+                  <div class="col-md-6 mb-3 d-none">
+                    <label for="email" class="form-label"
+                      >Email<sup
+                        ><span style="font-size: 10px; color: red"
+                          >&#9733;</span
+                        ></sup
+                      ></label
+                    >
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      placeholder="Enter your email"
+                      required  
+                      value="sample@gmail.com"
+                      hidden
+                    />
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <label for="username" class="form-label"
+                      >Username<sup
+                        ><span style="font-size: 10px; color: red"
+                          >&#9733;</span
+                        ></sup
+                      ></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="username"
+                      name="username"
+                      placeholder="Choose a username"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                    <label for="password" class="form-label"
+                      >Password<sup
+                        ><span style="font-size: 10px; color: red"
+                          >&#9733;</span
+                        ></sup
+                      ></label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      name="password"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <div id="suggested-password-content">
+                      <div class="arrow"></div>
+                      <span style="border: none;">Use Strong Password <input id="suggested-password-value" style="border: none;" value=""/></span>
+                    </div>
+                  </div>                  
+                  <div class="col-md-12 mb-3">
+                    <label for="confirmPassword" class="form-label"
+                      >Confirm Password<sup
+                        ><span style="font-size: 10px; color: red"
+                          >&#9733;</span
+                        ></sup
+                      ></label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      placeholder="Confirm your password"
+                      required
+                    />
+                  </div>
+                  <div style="font-size: 12px;">Your password must be at least 6 characters long. For a stronger password, combine upper and lowercase letters, digits, and symbols.</div>
+                </div>
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary">
+                    Register
+                  </button>
+                </div>
+                <div class="text-center mt-3" style="font-size: small">
+                  By registering, you agree to our <br />
+                  
+                </div>
+                <div class="mt-3 text-center" style="font-size: small">
+                  <p>
+                    Already have an account?
+                    <a href="{% url 'login' %}" style="color: blue"
+                      >Login Here</a
+                    >
+                  </p>
+                </div>
+              </form>
+
+              <script
+                src="https://www.google.com/recaptcha/api.js"
+                async
+                defer
+              ></script>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- registration form and logo template ends here -->
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    {% include 'templates_includes/normal_includes/normal_footer.html' %}

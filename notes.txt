@@ -1,0 +1,9 @@
+1. .\venv\Scripts\activate
+2. python manage.py runserver 127.0.0.1:80 (automatically 4 bat files are run)
+3. page is reload every minute automatically, also when reload, updated all machines are showed into page.
+
+added ALLOWED_HOSTS = ['testramon02','127.0.0.1', 'localhost']
+then run this command
+python manage.py runserver 0.0.0.0:8000
+
+currently it is http not secured, need to be https

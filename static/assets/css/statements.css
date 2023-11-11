@@ -1,0 +1,56 @@
+
+body {
+      background-color: #ffffff; /* White background color */
+    }
+
+.state-privacy{
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    font-weight: 400;
+    font-size: 15px;
+    font-family:  'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    line-height: 32px;
+    color: rgb(30, 35, 41);
+}   
+
+
+/*######################## This code here stlyes the scroll bar on the statements.html page wher the privacy policies are found ##############################*/
+
+ /* Target the container with the scrollable content *
+ .scroll-container {
+    height: 500px;
+    overflow-y: auto;
+  }
+  
+  /* Define scrollbar styles for webkit browsers (Chrome, Safari) *
+  .scroll-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .scroll-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  /* Define scrollbar styles for Firefox *
+  .scroll-container::-moz-scrollbar {
+    width: 8px;
+  }
+  
+  .scroll-container::-moz-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  /* Define scrollbar styles for Microsoft Edge and Internet Explorer *
+  .scroll-container::-ms-scrollbar {
+    width: 8px;
+  }
+  
+  .scroll-container::-ms-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }*/

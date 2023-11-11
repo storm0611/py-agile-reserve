@@ -1,0 +1,131 @@
+{% load static %}
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
+<div class="footer">
+  <div class="container text-center">
+    <span class="text-muted">This web page auto refresh every minute.</span>
+  </div>
+</div>
+
+<!-- Template Main JS File -->
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+<!-- Vendor JS Files -->
+<script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets/vendor/datatable/jquery.dataTables.js' %}"></script>
+
+<!-- Custom JS File -->
+<script src="{% static 'assets/js/style.js' %}"></script>
+
+<!-- JavaScript code to dynamically update the current year -->
+<script>
+  // Wait for the DOM (HTML document) to be fully loaded and parsed
+  document.addEventListener("DOMContentLoaded", function () {
+    // Select the HTML element with the ID "current-year" from the document
+    const currentYearElem = document.querySelector("#current-year");
+
+    // Create a new Date object representing the current date and time
+    const currentYear = new Date().getFullYear();
+
+    // Update the content of the selected element with the current year
+    currentYearElem.textContent = currentYear;
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + "=")) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    // subscription
+    const form = document.getElementById('subscribeForm');
+    form.addEventListener('submit', (event) => {
+      // prevent the default submit action
+      event.preventDefault();
+      // your custom form handling code goes here
+      const xhttp = new XMLHttpRequest();
+      xhttp.onload = function () {
+        try {
+          const responseText = JSON.parse(xhttp.responseText);
+          location.reload();
+        } catch (err) {
+          // window.location.href = xhttp.responseURL;
+          location.reload();
+        }
+      }
+      xhttp.open("POST", "{% url 'subscription' %}");
+      xhttp.setRequestHeader('X-CSRFToken', getCookie("csrftoken"));
+      // get the email value from the form input
+      const email = document.getElementById('subscribeEmail').value;
+      // include the email value in the data sent with the AJAX request
+      const data = new FormData();
+      data.append('email', email);
+      xhttp.send(data);
+    });
+
+    // suggested password
+    var suggestedPassword = "";
+    $("#password").on("focus", function () {
+      $.ajax({
+        url: "{% url 'get_suggested_strong_password' %}",
+        method: "POST",
+        headers: {
+          'X-CSRFToken': getCookie("csrftoken")
+        },
+        data: {},
+        contentType: "application/json",
+        success: function (result, status, xhr) {
+          try {
+            suggestedPassword = result.suggested_password;
+            $('#suggested-password-value').val(result.suggested_password);
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      });
+      $("#suggested-password-content").css({
+        left: $(this).offset().left,
+        top: $(this).offset().top + $(this).outerHeight()
+      }).show();
+    });
+
+    $("#suggested-password-content").on("click", function () {
+      $('#password').val(suggestedPassword);
+      $('#confirmPassword').val(suggestedPassword);
+      $(this).hide();
+    });
+
+    $(document).on("click", function (event) {
+      if (!$(event.target).closest("#suggested-password-content, #password").length) {
+        $("#suggested-password-content").hide();
+      }
+    });
+
+  });
+
+</script>
+
+<script>
+  function openProblemSolvingModal() {
+    $('#problemSolvingModal').modal('show');
+  }
+</script>
+
+</body>
+
+</html>

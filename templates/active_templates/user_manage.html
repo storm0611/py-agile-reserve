@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Welcome page</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    {% include 'templates_includes/active_includes/admin_active_user_manage_header.html' %}
+
+    <main id="main">
+        <table id="example" class="display" style="width:50%">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>User</th>
+                    <th class="delete_user pe-4">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in user_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user }}</td>
+                    <td class="delete_user">
+                        <button type="button" class="btn btn-danger selected_id" data-bs-target="#deleteModal"
+                            data-bs-toggle="modal">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" role="dialog" tabindex="-1" aria-labelledby="deleteModal"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+                    </div>
+                    <div class="modal-body">
+                            <form method="post" action="{% url 'delete_user' %}" class="row">
+                                {% csrf_token %}
+                            <p>Are you sure you want to delete this user?</p>
+                            <input type="hidden" id="selected_user_id" name="delete_user" value="" />
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="close-modal"
+                                data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-danger" id="delete_user">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include 'templates_includes/active_includes/active_footer.html' %}

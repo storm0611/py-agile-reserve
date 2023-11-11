@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.108.0">
+    <title>StudyStash WorkSpace</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/offcanvas-navbar/">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.0/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
+    
+   <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="offcanvas-navbar.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+    
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" aria-label="Main navigation">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="successuser.html">STUDYSTASH</a>
+        <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="successuser.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a id="employmentLink" class="nav-link" href="#">Employment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="partnershipList.html">Our Partners</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="profilesettings.html">Main Settings</a></li>
+                <li><a class="dropdown-item" href="#">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!--<form class="d-flex pt-1" role="search">
+           <p style="font-size: 14px; font-weight: bold;"></p>
+          </form>-->        
+        </div>
+      </div>
+    </nav>
+    
+
+<div class="nav-scroller bg-body shadow-sm">
+  <nav class="nav" aria-label="Secondary navigation">
+    <a class="nav-link active" aria-current="page" href="#">Ouick Links</a>
+    <a class="nav-link" href="#">Study-Stash Store</a>
+    <a class="nav-link" href="#" id="openCoursesModalLink">Courses we Support</a>
+    <a class="nav-link" href="#" id="openModalLink">Refer a friend</a>
+    <a class="nav-link" href="#">News & Events</a>
+    <a class="nav-link" href="#scholarshipLoansModal">Scholarship & Loans</a>
+    <a class="nav-link" href="#">Help & Support</a>
+    <a class="nav-link" href="#">Contact us</a>
+    <a class="nav-link" href="#">Terms of Service</a>
+
+  </nav>
+</div>
+
+<main class="container pt-3">
+  <div class="container-fluid p-3 bg-primary text-white text-center">
+   <h1>Dear User</h1>
+   <p>Welcome to your StudyStash Dashboard! Enjoy seamless access to all features, course materials, and progress tracking. For any assistance, our team is here to help. Happy Contibution! Study-Stash Team.</p> 
+  </div>
+  <div class="container mt-5 pt-5">
+    <div class="row ">
+      <div class="col-sm-4">
+        <h3>Earnings</h3>
+        <p class="text-success" style="font-size: 50px; font-weight: bold">$ 500</p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Questions Answered</h3>
+        <p class="text-primary"style="font-size: 50px; font-weight: bold">100 Qns</p>
+      </div>
+      <div class="col-sm-4 ">
+        <h3>Renewal Time</h3>        
+        <p class="text-warning"style="font-size: 50px; font-weight: bold">15 Days</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!--this modal here is the code to refer a friend -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Refer a friend</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Share this referral link with your friends:</p>
+          <div class="input-group mb-3">
+              <input type="text" id="referralLink" class="form-control" value="https://www.example.com/referral" readonly>
+              <button class="btn btn-outline-secondary" type="button" onclick="copyReferralLink()">Copy</button>
+          </div>
+          <p class="text-muted small">
+            Refer friends to Study-Stash to unlock invaluable educational resources and earn 20% of their subscription, showing your support and benefiting together.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #eb5c1ec4;">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--this modal above is the code to refer a friend -->
+
+  <!-- This modal here is for the course list we support at studystash.com -->
+  <div class="modal fade" id="coursesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="coursesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 fw-bold" id="coursesModalLabel">Courses that we support</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>We are constantly updating our list of courses available in different universities. If you don't find the course you are looking for at the moment, don't worry! Our team is working hard to keep the list up-to-date.</p>
+                <div class="mb-3">
+                  <input type="text" class="form-control border-primary" id="courseSearchInput" placeholder="Search courses Here">
+                </div>
+                <ul class="ml-5 list-unstyled ml-3" id="courseList">
+                    <li>African Studies</li>
+                    <li>Humanities</li>
+                    <li>Anesthesiology</li>
+                    <li>Health &amp; Medicine</li>
+                    <li>Anthropology</li>
+                    <li>Social Sciences</li>
+                    <li>Applied Mathematics</li>
+                    <li>Physical Sciences</li>
+                    <li>Applied Physics</li>
+                    <li>Physical Sciences</li>
+                    <li>Archaeological Studies</li>
+                    <li>Social Sciences</li>
+                    <li>Architecture</li>
+                    <li>Humanities</li>
+                    <li>Cell Biology</li>
+                    <li>Biological Sciences</li>
+                    <li>Cellular &amp; Molecular Physiology</li>
+                    <li>Biological Sciences, Health &amp; Medicine</li>
+                    <li>Chemical &amp; Environmental Engineering</li>
+                    <li>Engineering</li>
+                    <li>Chemistry</li>
+                    <li>Physical Sciences</li>
+                    <li>Child Study Center</li>
+                    <li>Health &amp; Medicine</li>
+                    <li>Chronic Disease Epidemiology</li>
+                    <li>Health &amp; Medicine</li>
+                    <li>Classics</li>
+                    <li>Humanities</li>
+                    <li>Cognitive Science</li>
+                    <li>Health &amp; Medicine, Social Sciences</li>
+                    <li>Comparative Literature</li>
+                    <li>Humanities</li>
+                    <li>Comparative Medicine</li>
+                    <li>Health &amp; Medicine</li>
+                    <li>Computational Biology &amp; Bioinformatics</li>
+                    <li>Biological Sciences</li>
+                    <li>Computer Science</li>
+                    <li>Engineering</li>
+                    <!-- Add more courses here -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #eb5c1ec4;">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This modal is for the scholarship and loans link -->
+<div class="modal fade" id="scholarshipLoansModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="scholarshipLoansModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5 fw-bold" id="scholarshipLoansModalLabel">Scholarship &amp; Loans</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Dear students, we are excited to announce that our scholarship program is now available for all pricing plans! Whether you have subscribed to the basic, standard, or premium plan, you are eligible for the scholarship programs offered by Study-Stash.com.</p>
+        
+            <p>For our valued pro subscribers, we have an exclusive loan program available. If you are on our pro plan, you can take advantage of our loan program to support your educational journey.</p>
+        
+            <p>We understand the importance of staying informed, especially when it comes to scholarship opportunities and loan options. To keep you updated, we regularly open scholarship programs and loans, especially during the start of school seasons.</p>
+        
+            <p>The best part is that our loans do not require cosigners, making the process easier for you. So, if you want to be the first to know about the latest scholarship openings and loan availability, make sure to subscribe to our newsletter. You can also follow us on social media to stay updated on all the exciting opportunities Study-Stash.com has to offer.</p>
+        
+            <p>We are committed to supporting your academic pursuits and helping you achieve your educational goals. Your success is our priority, and we look forward to assisting you on your journey to excellence.</p>
+        </div>        
+          <div class="modal-footer">
+            <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #eb5c1ec4;">Understood</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!--This modal code  stands for the employment link -->
+<div class="modal fade" id="employmentModal" tabindex="-1" aria-labelledby="employmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-5 fw-bold" id="employmentModalLabel">Employment Opportunities at Study-Stash</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>At Study-Stash, we take pride in our dedicated team, working hard to create employment opportunities for our StudyStash members and contribute to the establishment of industries.</p>
+        <p>We frequently open job applications to grow our team and welcome individuals who share our vision and passion.</p>
+        <p>We announce new job opportunities on our Telegram channel. Be sure to follow and join us there to stay updated!</p>
+        <p>Join us now and don't wait to become a part of our inspiring journey.</p>
+        <p>
+          <a href="https://t.me/studystashjobs" target="_blank" class="btn btn-primary" rel="noopener noreferrer">
+            Join our Telegram channel for job updates
+          </a>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+</main>
+
+<!-- This is the footer -->
+<div class="container pt-2">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+      <!--this should be changed to study stash-->
+      <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
+      </a>
+      <span class="mb-3 mb-md-0 text-muted" style="font-size: 15px;">&copy; <span id="current-year"></span> Study-Stash, All Rights Reserved</span>
+    </div>
+  </footer>
+</div>
+
+
+    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+      <script src="offcanvas-navbar.js"></script>
+      
+  </body>
+</html>

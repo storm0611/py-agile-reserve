@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta http-equiv="refresh" content="60">
+  <title>Welcome page</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  {% include 'templates_includes/active_includes/active_header.html' %}
+
+
+
+  <main id="main">
+    <table id="example" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Device</th>
+          <th>FW Version</th>
+          <th>Serial No.</th>
+          <th>IP Address</th>
+          <th>Identification</th>
+          <th>Options</th>
+          <th style="width: 100px;">Booked by</th>
+          <th style="width: 130px;">Booked until</th>
+          <th class="login_action">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if matching_user %}
+        {% for machine in machine_lists %}
+        {% if machine.user == user %}
+        {% if machine.device_name %}
+        <tr>
+          <td>{{ machine.device_name }}</td>
+          <td>{{ machine.fw_version }}</td>
+          <td>{{ machine.serial_no }}</td>
+          <td>{{ machine.ip_address }}</td>
+          <td>{{ machine.identification }}</td>
+          <td>{{ machine.options }}</td>
+          <td>{{ machine.user }}</td>
+          <td>{{ machine.book_date }}</td>
+          <td class="login_action">
+            <button class="btn btn-danger book_end">End</button>
+          </td>
+        </tr>
+        {% endif %}
+        {% else %}
+        {% if machine.device_name %}
+        <tr>
+          <td>{{ machine.device_name }}</td>
+          <td>{{ machine.fw_version }}</td>
+          <td>{{ machine.serial_no }}</td>
+          <td>{{ machine.ip_address }}</td>
+          <td>{{ machine.identification }}</td>
+          <td>{{ machine.options }}</td>
+          <td>{{ machine.user }}</td>
+          <td>{{ machine.book_date }}</td>
+          <td class="login_action">
+          </td>
+        </tr>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        {% for machine in machine_lists %}
+        {% if machine.user %}
+        {% if machine.device_name %}
+        <tr>
+          <td>{{ machine.device_name }}</td>
+          <td>{{ machine.fw_version }}</td>
+          <td>{{ machine.serial_no }}</td>
+          <td>{{ machine.ip_address }}</td>
+          <td>{{ machine.identification }}</td>
+          <td>{{ machine.options }}</td>
+          <td>{{ machine.user }}</td>
+          <td>{{ machine.book_date }}</td>
+          <td class="login_action">
+          </td>
+        </tr>
+        {% endif %}
+        {% else %}
+        {% if machine.device_name %}
+        <tr>
+          <td>{{ machine.device_name }}</td>
+          <td>{{ machine.fw_version }}</td>
+          <td>{{ machine.serial_no }}</td>
+          <td>{{ machine.ip_address }}</td>
+          <td>{{ machine.identification }}</td>
+          <td>{{ machine.options }}</td>
+          <td>{{ machine.user }}</td>
+          <td>{{ machine.book_date }}</td>
+          <td class="login_action">
+            <button class="btn btn-primary book_start" data-bs-toggle="modal"
+              data-bs-target="#exampleModal">Book</button>
+          </td>
+        </tr>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Time Slot</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="post" action="{% url 'machine_book' %}" class="row">
+              {% csrf_token %}
+              <div class="input-group mb- px-3">
+                <h2 for="date" class="col-3 col-form-label">Book For :</h2>
+                <div class="col-7 d-flex">
+                  <input type="number" class="form-control w-75" name="booking_date" placeholder="Enter number" min="1"
+                    required>
+                  <div class="w-50">
+                    <select class="form-select" name="booking_duration">
+                      <option value="hour">Hours</option>
+                      <option value="day">Days</option>
+                    </select>
+                  </div>
+                </div>
+                <input type="hidden" name="ipAddress" id="ip_address" value="" />
+              </div>
+              <div class="modal-footer mt-4">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary book_date">Book</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {% include 'templates_includes/active_includes/active_footer.html' %}
