@@ -22,6 +22,8 @@
           <th>Serial No</th>
           <th>IP Address</th>
           <th>Identification</th>
+          <th>Lock Owner</th> 
+          <th>Users</th>
           <th>Options</th>
           <th style="width: 100px;">Booked by</th>
           <th style="width: 130px;">Booked until</th>
@@ -36,6 +38,8 @@
               <td>{{ machine.serial_no }}</td>
               <td>{{ machine.ip_address }}</td>
               <td>{{ machine.identification }}</td>
+              <td>{{ machine.lock_reply }}</td>
+              <td>{{ machine.users_reply }}</td>
               <td>{{ machine.options }}</td>
               <td>{{ machine.user }}</td>
               <td>{{ machine.book_date }}</td>
