@@ -312,16 +312,19 @@ def active_index(request, *args, **kwargs):
     # Add any logic you want for this view
     # For example, you can retrieve data from the database or perform other actions
     machine_lists = MachineList.objects.all()
-    user = str(request.user)
-    print(user)
+    user = request.user
+    print(user.username)
     matching_user = 0
+    current_booked_num = 0
     for machine in machine_lists:
-        if machine.user == user:
-            matching_user = 1
+        if machine.user == user.username:
+            current_booked_num += 1
+            if user.can_book_num == current_booked_num:
+                matching_user = 1
     if user == "admin":
         return render(request, 'normal_templates/404.html')
     else:
-        return render(request, 'active_templates/active_index.html', {"user": user, 'active_msg': kwargs.get("verify_msg", False), 'machine_lists': machine_lists, "matching_user": matching_user})  
+        return render(request, 'active_templates/active_index.html', {"user": user.username, 'active_msg': kwargs.get("verify_msg", False), 'machine_lists': machine_lists, "matching_user": matching_user})  
 
 @login_required
 def admin_active_index(request, *args, **kwargs):
@@ -357,6 +360,7 @@ def admin_machine_book(request):
 
     booking_date = request.POST['booking_date']
     ip_address = request.POST['ipAddress']
+    sn = request.POST['sn']
     booking_duration = request.POST['booking_duration']
 
     booking_date = int(booking_date)
@@ -371,7 +375,7 @@ def admin_machine_book(request):
         else:
             new_time = now + timedelta(hours=booking_date)
             formatted_time = new_time.strftime("%d-%m-%Y %H:%M")
-            machine = MachineList.objects.get(ip_address=ip_address)
+            machine = MachineList.objects.get(serial_no=sn)
             machine.book_date = f"{ formatted_time }"
             machine.user = user
             machine.save()
@@ -420,6 +424,7 @@ def active_session_membership(request):
 def machine_book(request):
     booking_date = request.POST['booking_date']
     ip_address = request.POST['ipAddress']
+    sn = request.POST['sn']
     booking_duration = request.POST['booking_duration']
 
     booking_date = int(booking_date)
@@ -462,8 +467,9 @@ def machine_end(request):
         if request.method == 'POST':
             data = json.load(request)
             ip_address = data.get('data')
+            sn = data.get('sn')
 
-            machine = MachineList.objects.get(ip_address=ip_address)
+            machine = MachineList.objects.get(serial_no=sn)
             machine.book_date = ""
             machine.user = ""
             machine.save()

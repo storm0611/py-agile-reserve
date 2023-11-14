@@ -5,3 +5,8 @@ enhancement*/
 *.key
 *.zip
 db.*
+hosts
+*.pem
+migrations/
+.env
+backup.*

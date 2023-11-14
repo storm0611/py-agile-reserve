@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,11 +25,12 @@ SECRET_KEY = 'django-insecure-hq#x)9d-9o3kvlm4$7zi*0(*75ag!w2!+sly))e@7++%f%jl3c
 FERNET_KEY = 'YpHvX2mAOOy8EsrVo8yDdXd3Wry0zR1ibGlA7dYo6X8='
 
 # SECURITY WARNING: don't run with debug turned on in production!
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 DEBUG = True
 
 # ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.ngrok-free.app']
 # ALLOWED_HOSTS = ['arsDemo.com']
-ALLOWED_HOSTS = ['testramon02', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['testramon02.com', '127.0.0.1', 'localhost', '0.0.0.0']
 
 # csrf
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'https://127.0.0.1', 'http://localhost','https://localhost', 'https://testramon02', 'http://testramon02']
@@ -43,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'AgileReserveSys',
-    'sslserver'
+    'django_extensions'
+    # 'sslserver'
 ]
 
 MIDDLEWARE = [
@@ -89,7 +92,6 @@ AUTH_USER_MODEL = "AgileReserveSys.CustomUser"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
 #   'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -105,12 +107,11 @@ DATABASES = {
 #     },
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'AgileReserve',
-        'USER': 'postgres',
-        # 'PASSWORD': '123',
-        'PASSWORD': 'postgres',
-        'HOST': 'localhost',  # or your PostgreSQL server's hostname
-        'PORT': '5432',       # or your PostgreSQL server's port
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),  # or your PostgreSQL server's hostname
+        'PORT': os.environ.get('DB_PORT'),       # or your PostgreSQL server's port
     }
 }
 

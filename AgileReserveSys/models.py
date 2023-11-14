@@ -15,6 +15,8 @@ class CustomUser(AbstractUser):
     verified_at = models.DateTimeField(_('verified_at'), null=True)
     deactivated_at = models.DateTimeField(_('deactivated_at'), null=True)
     is_first = models.BooleanField(_('is_first'), default=True)
+    can_book_num = models.IntegerField(_('can_book_num'), default=1)
+    email = models.CharField(_("email"), null=True)
 
     # how to use subscriber here
     # new_subscriber = user.subscriber_set.create(email="xxx@xxx.xxx")
@@ -36,6 +38,8 @@ class MachineList(models.Model):
     device_host_name = models.CharField(_('device_host_name'), blank=True, null=True)
     ip_address = models.CharField(_('ip_address'), blank=True, null=True)
     identification = models.CharField(_('identification'), blank=True, null=True)
+    lock_reply = models.CharField(_("lock_reply"), default="(NONE)")
+    users_reply = models.CharField(_("users_reply"), default="(NONE)")
     options = models.CharField(_('options'), blank=True, null=True)
     user = models.CharField(_('user'), blank=True, null=True)
     book_date = models.CharField(_('book_date'), blank=True, null=True)

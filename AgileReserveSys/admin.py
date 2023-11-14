@@ -13,7 +13,7 @@ from .models import (
 class CustomUserAdmin(UserAdmin):
     
     model = CustomUser
-    list_display = ["email", "username", "verified_at", "deactivated_at", "is_first"]
+    list_display = ["username", "verified_at", "deactivated_at", "is_first", "can_book_num"]
 
 class SubscriberAdmin(admin.ModelAdmin):
     

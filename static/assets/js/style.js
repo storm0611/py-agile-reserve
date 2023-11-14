@@ -12,8 +12,10 @@ $(function () {
 // Book machine
 $(".book_start").click(function () {
   var ipAddress = $(this).parent().parent().children(':nth-child(4)').text();
+  var sn = $(this).parent().parent().children(':nth-child(3)').text();
 
   $('#ip_address').val(ipAddress);
+  $('#sn').val(sn);
 });
 
 // End booked machine
@@ -35,7 +37,8 @@ function getCookie(name) {
 
 $(".book_end").click(function () {
   var ipAddress = $(this).parent().parent().children(':nth-child(4)').text();
-  var data = JSON.stringify({ data: ipAddress })
+  var sn = $(this).parent().parent().children(':nth-child(3)').text();
+  var data = JSON.stringify({ data: ipAddress, sn: sn })
   $.ajax({
     url: '/machine_end/',
     type: 'POST',

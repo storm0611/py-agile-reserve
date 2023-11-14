@@ -390,15 +390,15 @@ if len(sys.argv) > 2:
             existing_ip = cursor.fetchone()
 
             if existing_ip:
-                query = 'UPDATE public."AgileReserveSys_machinelist" SET device_name = %s, fw_version = %s, serial_no = %s, device_host_name = %s, identification = %s, options = %s  WHERE ip_address = %s'
+                query = 'UPDATE public."AgileReserveSys_machinelist" SET device_name = %s, fw_version = %s, serial_no = %s, device_host_name = %s, identification = %s, options = %s, lock_reply = %s, users_reply = %s WHERE ip_address = %s'
 
-                cursor.execute(query, (test["deviceName"], test["fwVersion"], test["deviceID"], test["deviceHostName"], test["idnReply"], test["optionsReply"], ip_address ))
+                cursor.execute(query, (test["deviceName"], test["fwVersion"], test["deviceID"], test["deviceHostName"], test["idnReply"], test["optionsReply"], test["lockReply"], test["usersReply"], ip_address ))
             else:
-                query = 'INSERT INTO public."AgileReserveSys_machinelist" (id, device_name, fw_version, serial_no, device_host_name, ip_address, identification, options) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+                query = 'INSERT INTO public."AgileReserveSys_machinelist" (id, device_name, fw_version, serial_no, device_host_name, ip_address, identification, options, lock_reply, users_reply) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
 
                 new_id = int(number) + 1
 
-                cursor.execute(query, (new_id, test["deviceName"], test["fwVersion"], test["deviceID"], test["deviceHostName"], test["ipAddress"], test["idnReply"], test["optionsReply"]))
+                cursor.execute(query, (new_id, test["deviceName"], test["fwVersion"], test["deviceID"], test["deviceHostName"], test["ipAddress"], test["idnReply"], test["optionsReply"], test["lockReply"], test["usersReply"]))
             conn.commit()
 
         
