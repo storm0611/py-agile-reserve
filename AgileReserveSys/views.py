@@ -168,11 +168,11 @@ def normal_register(request):
         User = get_user_model()
 
         # Check if the email is already registered
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email already exists!', extra_tags='danger')
+        # if User.objects.filter(email=email).exists():
+        #     messages.error(request, 'Email already exists!', extra_tags='danger')
 
         # Check if the username is already taken
-        elif User.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already taken!', extra_tags='danger')
 
         # Check if the passwords match

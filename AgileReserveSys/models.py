@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
     is_first = models.BooleanField(_('is_first'), default=True)
     can_book_num = models.IntegerField(_('can_book_num'), default=1)
     # email = models.CharField(_("email"), null=True)
-    email = None
+    # email = None
 
     # how to use subscriber here
     # new_subscriber = user.subscriber_set.create(email="xxx@xxx.xxx")
