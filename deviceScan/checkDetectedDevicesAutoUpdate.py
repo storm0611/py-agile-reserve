@@ -377,24 +377,24 @@ if len(sys.argv) > 2:
         for test in fileText:
             print("fileText:", test)
             test = json.loads(test)
-            print(type(test["ipAddress"]))
             ip_address = test["ipAddress"]
 
-            cursor.execute('SELECT COUNT(*) FROM public."AgileReserveSys_machinelist"')
+            cursor.execute('SELECT COUNT(*) FROM "AgileReserveSys_machinelist"')
             count = cursor.fetchone()
             number = count[0]
 
 
-            cursor.execute('SELECT * FROM public."AgileReserveSys_machinelist" WHERE ip_address=%s', (ip_address,))
+            cursor.execute('SELECT * FROM "AgileReserveSys_machinelist" WHERE serial_no=%s', (test["deviceID"],))
 
             existing_ip = cursor.fetchone()
+            print(existing_ip)
 
             if existing_ip:
-                query = 'UPDATE public."AgileReserveSys_machinelist" SET device_name = %s, fw_version = %s, serial_no = %s, device_host_name = %s, identification = %s, options = %s, lock_reply = %s, users_reply = %s WHERE ip_address = %s'
+                query = 'UPDATE "AgileReserveSys_machinelist" SET device_name = %s, fw_version = %s, ip_address = %s, device_host_name = %s, identification = %s, options = %s, lock_reply = %s, users_reply = %s WHERE serial_no = %s'
 
-                cursor.execute(query, (test["deviceName"], test["fwVersion"], test["deviceID"], test["deviceHostName"], test["idnReply"], test["optionsReply"], test["lockReply"], test["usersReply"], ip_address ))
+                cursor.execute(query, (test["deviceName"], test["fwVersion"], test["ipAddress"], test["deviceHostName"], test["idnReply"], test["optionsReply"], test["lockReply"], test["usersReply"], test["deviceID"] ))
             else:
-                query = 'INSERT INTO public."AgileReserveSys_machinelist" (id, device_name, fw_version, serial_no, device_host_name, ip_address, identification, options, lock_reply, users_reply) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+                query = 'INSERT INTO "AgileReserveSys_machinelist" (id, device_name, fw_version, serial_no, device_host_name, ip_address, identification, options, lock_reply, users_reply) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
 
                 new_id = int(number) + 1
 
