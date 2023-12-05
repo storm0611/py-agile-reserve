@@ -10,10 +10,11 @@ from .models import (
     MachineList
 )
 
-class CustomUserAdmin(UserAdmin):
+class CustomUserAdmin(admin.ModelAdmin):
     
     model = CustomUser
-    list_display = ["username", "verified_at", "deactivated_at", "is_first", "can_book_num"]
+    list_display = ('username', 'email', 'verified_at', 'deactivated_at', 'is_first', 'can_book_num')
+    # list_display = ["username", "verified_at", "deactivated_at", "is_first", "can_book_num"]
 
 class SubscriberAdmin(admin.ModelAdmin):
     
