@@ -12,9 +12,9 @@ class CustomUser(AbstractUser):
     # password (already included in AbstractUser)
 
     # Additional fields (Optional, you can add more if needed)
-    verified_at = models.DateTimeField(_('verified_at'), null=True)
-    deactivated_at = models.DateTimeField(_('deactivated_at'), null=True)
-    is_first = models.BooleanField(_('is_first'), default=True)
+    # verified_at = models.DateTimeField(_('verified_at'), null=True)
+    # deactivated_at = models.DateTimeField(_('deactivated_at'), null=True)
+    # is_first = models.BooleanField(_('is_first'), default=True)
     can_book_num = models.IntegerField(_('can_book_num'), default=1)
     # email = models.CharField(_("email"), null=True)
     # email = None

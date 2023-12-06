@@ -11,10 +11,6 @@ def redirect_authenticated_user(view):
     @wraps(view)
     def wrapper(request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.deactivated_at:
-                return redirect("active_index")
-            # if request.user.is_first:
-            #     return redirect("active_first_time_user")
             return redirect("active_index")
         else:
             return view(request, *args, **kwargs)
