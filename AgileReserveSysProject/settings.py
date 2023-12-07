@@ -30,7 +30,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.ngrok-free.app']
 # ALLOWED_HOSTS = ['arsDemo.com']
-ALLOWED_HOSTS = ['testramon02.com', '127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['testramon02', '127.0.0.1', 'localhost', '0.0.0.0']
 
 # csrf
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'https://127.0.0.1', 'http://localhost','https://localhost', 'https://testramon02', 'http://testramon02']
