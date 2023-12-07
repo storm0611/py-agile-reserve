@@ -308,9 +308,9 @@ if len(sys.argv) > 2:
                     if not user.startswith('DEF'):
                         userHostName = getUserName(user.split(',')[0].strip().replace('"', ''), knownUsers, hostNames)
                         if len(userHostName) > 0 and not userHostName.startswith('DEF') and userHostName not in usersReply:
-                            usersReply = usersReply + '<b>' + userHostName + '</b><br>'
-                if usersReply.endswith('<br>'):
-                    usersReply = usersReply.rsplit('<br>', 1)[0]
+                            usersReply = usersReply + ' ' + userHostName + ' '
+                # if usersReply.endswith('<br>'):
+                #     usersReply = usersReply.rsplit('<br>', 1)[0]
             else:
                 usersReply = '(NONE)'
             # table row
