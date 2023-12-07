@@ -2,12 +2,12 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import subprocess
 
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AgileReserveSysProject.settings')
-    
-    # import subprocess
+
     # subprocess.Popen([r'.\deviceScan\checkDetectedDevicesAutoUpdate.bat'])
     # subprocess.Popen([r'.\deviceScan\checkPriorityDevicesAutoUpdate.bat'])
     # subprocess.Popen([r'.\deviceScan\DeviceScanner.bat'])

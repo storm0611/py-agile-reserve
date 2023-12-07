@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <!--<meta http-equiv="refresh" content="60">-->
+  <meta http-equiv="refresh" content="60">
 
   <title>Device Network</title>
   <meta content="" name="description">
@@ -49,25 +49,5 @@
       </tbody>
     </table>
   </main>
-
-  <a class="refresh-button" href="{% url 'scan' %}">
-    <style>
-      .refresh-button {
-        position: fixed;
-        bottom: 50px;
-        right: 20px;
-        z-index: 100;
-        padding: 10px 20px;
-        background-color: #ffffff;
-        border: 1px solid #dddddd;
-        border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        text-decoration: none;
-        color: #333333;
-        cursor: pointer;
-      }
-    </style>
-    <i class="fas fa-sync-alt">Scan Device</i>
-  </a>
 
   {% include 'templates_includes/normal_includes/normal_footer.html' %}
