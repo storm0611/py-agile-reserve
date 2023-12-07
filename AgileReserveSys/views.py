@@ -37,7 +37,11 @@ from .models import (
     MachineList,
     CustomUser
 )
-
+from deviceScan import (
+    checkDetectedDevicesAutoUpdate,
+    DeviceScanner,
+    HostNameScanner
+)
 
 # Create your views here.
 
@@ -151,6 +155,13 @@ def login_user(request):
 
 @redirect_authenticated_user
 def index_view(request):
+    machine_lists = MachineList.objects.all()
+    return render(request, 'normal_templates/index.html',  {"machine_lists": machine_lists})
+
+def scan(request):
+    checkDetectedDevicesAutoUpdate.main()
+    DeviceScanner.main()
+    HostNameScanner.main()
     machine_lists = MachineList.objects.all()
     return render(request, 'normal_templates/index.html',  {"machine_lists": machine_lists})
 
@@ -300,8 +311,8 @@ def account_activate_confirm(request, uidb64, token):
     if not default_token_generator.check_token(user, token):
         return HttpResponse("Invalid Token.")
     
-    user.verified_at = datetime.now()
-    user.deactivated_at = None
+    # user.verified_at = datetime.now()
+    # user.deactivated_at = None
     user.save()
     request.user = user
     send_general_mail(user=user, email_template='email_templates/thank_you_for_joining_email_template.html', subject="Activated Successfully")
