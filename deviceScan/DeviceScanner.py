@@ -137,50 +137,50 @@ def main():
             print(f'    ERROR: [{logFile}] is not a valid file...')
             exit()
 
-        # getHostName = False
-        # # if sys.argv[2] == 'CHECK_HOSTNAME ':
-        # #     getHostName = True
+        getHostName = False
+        # if sys.argv[2] == 'CHECK_HOSTNAME ':
+        #     getHostName = True
 
-        # # initialize device list
-        # dictDevices = {}
-        # dictCountdown = {}
+        # initialize device list
+        dictDevices = {}
+        dictCountdown = {}
 
-        # # initialize address list
-        # ipAddressList = [ ipaddress.ip_address('172.17.75.1') , ipaddress.ip_address('172.25.57.5') , ipaddress.ip_address('192.168.61.229') ]
+        # initialize address list
+        ipAddressList = [ ipaddress.ip_address('172.17.75.1') , ipaddress.ip_address('172.25.57.5') , ipaddress.ip_address('192.168.61.229') ]
 
-        # ip_ranges = read_config()
-        # for startIp, endIp in ip_ranges:
-        #     while startIp <= endIp:
-        #         ipAddressList.append(startIp)
-        #         startIp += 1
+        ip_ranges = read_config()
+        for startIp, endIp in ip_ranges:
+            while startIp <= endIp:
+                ipAddressList.append(startIp)
+                startIp += 1
 
-        # # DEBUGGING
+        # DEBUGGING
         
-        # if DEBUGGING_IP in ipAddressList:
-        #     print('DEBUGGING: 192.168.0.158 is in the list')
+        if DEBUGGING_IP in ipAddressList:
+            print('DEBUGGING: 192.168.0.158 is in the list')
 
-        # # start scan
-        # print('INFO: Starting device scan...')
-        # while True:
-        #     for currentIP in ipAddressList:
-        #         for port in [5555, 5025]:
-        #             pollReply = pollDevice(str(currentIP), port, '*IDN?')
+        # start scan
+        print('INFO: Starting device scan...')
+        while True:
+            for currentIP in ipAddressList:
+                for port in [5555, 5025]:
+                    pollReply = pollDevice(str(currentIP), port, '*IDN?')
 
-        #             # DEBUGGING
-        #             if currentIP == DEBUGGING_IP:
-        #                 print(f"DEBUGGING: {currentIP} - {pollReply}")
+                    # DEBUGGING
+                    if currentIP == DEBUGGING_IP:
+                        print(f"DEBUGGING: {currentIP} - {pollReply}")
                                                         
 
-        #             if pollReply != '':
-        #                 print(f"{currentIP}: {pollReply.strip()}")
-        #                 addDevice(dictDevices, pollReply, str(currentIP), 10, dictCountdown, getHostName)
-        #                 writeListToFile(dictDevices, logFile)
-        #             else:
-        #                 print(f"{currentIP}:")
-        #     cleanDeviceList(dictDevices, dictCountdown)
-        #     writeListToFile(dictDevices, logFile)
-        #     time.sleep(0.1)
-        ########
+                    if pollReply != '':
+                        print(f"{currentIP}: {pollReply.strip()}")
+                        addDevice(dictDevices, pollReply, str(currentIP), 10, dictCountdown, getHostName)
+                        writeListToFile(dictDevices, logFile)
+                    else:
+                        print(f"{currentIP}:")
+            cleanDeviceList(dictDevices, dictCountdown)
+            writeListToFile(dictDevices, logFile)
+            time.sleep(0.1)
+        #######
     # else:
     #     print('    ERROR: not enough arguments...')
 
