@@ -177,3 +177,8 @@ EMAIL_USE_SSL = False
 # If you're using HTTPS
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SESSION_COOKIE_SECURE = True
+
+import subprocess
+subprocess.Popen([os.path.join(BASE_DIR, 'deviceScan', 'checkDetectedDevicesAutoUpdate.bat')])
+# subprocess.Popen([os.path.join(BASE_DIR, 'deviceScan', 'DeviceScanner.bat')])
+# subprocess.Popen([os.path.join(BASE_DIR, 'deviceScan', 'HostNameScanner.bat')])
