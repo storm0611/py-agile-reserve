@@ -5,13 +5,17 @@ import socket
 import time
 import psycopg2
 import json
+from dotenv import load_dotenv
+from AgileReserveSysProject.settings import BASE_DIR
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 conn = psycopg2.connect(
-    host="localhost",
-    port="5432",
-    database="AgileReserve",
-    user="postgres",
-    password="123"
+    host=os.environ.get('DB_HOST'),
+    port=os.environ.get('DB_PORT'),
+    database=os.environ.get('DB_NAME'),
+    user=os.environ.get('DB_USER'),
+    password=os.environ.get('DB_PASSWORD'),
 )
 
 cursor = conn.cursor()
