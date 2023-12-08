@@ -10,3 +10,4 @@ hosts
 migrations/
 .env
 backup.*
+*.rar
