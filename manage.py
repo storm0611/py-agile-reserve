@@ -8,10 +8,10 @@ def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AgileReserveSysProject.settings')
 
-    # subprocess.Popen([r'.\deviceScan\checkDetectedDevicesAutoUpdate.bat'])
-    # subprocess.Popen([r'.\deviceScan\checkPriorityDevicesAutoUpdate.bat'])
-    # subprocess.Popen([r'.\deviceScan\DeviceScanner.bat'])
-    # subprocess.Popen([r'.\deviceScan\HostNameScanner.bat'])
+    subprocess.Popen([r'.\deviceScan\checkDetectedDevicesAutoUpdate.bat'])
+    subprocess.Popen([r'.\deviceScan\checkPriorityDevicesAutoUpdate.bat'])
+    subprocess.Popen([r'.\deviceScan\DeviceScanner.bat'])
+    subprocess.Popen([r'.\deviceScan\HostNameScanner.bat'])
     
     try:
         from django.core.management import execute_from_command_line

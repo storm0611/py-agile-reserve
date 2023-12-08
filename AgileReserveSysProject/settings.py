@@ -178,12 +178,12 @@ EMAIL_USE_SSL = False
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SESSION_COOKIE_SECURE = True
 
-from datetime import datetime, timedelta
-start_t = datetime.now().timestamp()
-os.system('"' + os.path.join(BASE_DIR, 'deviceScan', 'checkDetectedDevicesAutoUpdate.bat') + '"')
-os.system('"' + os.path.join(BASE_DIR, 'deviceScan', 'DeviceScanner.bat') + '"')
-os.system('"' + os.path.join(BASE_DIR, 'deviceScan', 'HostNameScanner.bat') + '"')
-print(datetime.now().timestamp() - start_t)
+# from datetime import datetime, timedelta
+# start_t = datetime.now().timestamp()
+# os.system('"' + os.path.join(BASE_DIR, 'deviceScan', 'checkDetectedDevicesAutoUpdate.bat') + '"')
+# os.system('"' + os.path.join(BASE_DIR, 'deviceScan', 'DeviceScanner.bat') + '"')
+# os.system('"' + os.path.join(BASE_DIR, 'deviceScan', 'HostNameScanner.bat') + '"')
+# print(datetime.now().timestamp() - start_t)
 # subprocess.Popen([os.path.join(BASE_DIR, 'deviceScan', 'checkDetectedDevicesAutoUpdate.bat')])
 # subprocess.Popen([os.path.join(BASE_DIR, 'deviceScan', 'DeviceScanner.bat')])
 # subprocess.Popen([os.path.join(BASE_DIR, 'deviceScan', 'HostNameScanner.bat')])
