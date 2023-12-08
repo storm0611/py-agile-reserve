@@ -360,8 +360,10 @@ def admin_machine_end(request):
         if request.method == 'POST':
             data = json.load(request)
             ip_address = data.get('data')
+            sn = data.get('sn')
 
-            machine = MachineList.objects.get(ip_address=ip_address)
+            # machine = MachineList.objects.get(ip_address=ip_address)
+            machine = MachineList.objects.get(serial_no=sn)
             machine.book_date = ""
             machine.user = ""
             machine.save()
@@ -401,7 +403,8 @@ def admin_machine_book(request):
         else:
             new_time = now + timedelta(days=booking_date)
             formatted_time = new_time.strftime("%d-%m-%Y %H:%M")
-            machine = MachineList.objects.get(ip_address=ip_address)
+            # machine = MachineList.objects.get(ip_address=ip_address)
+            machine = MachineList.objects.get(serial_no=sn)
             machine.book_date = f"{ formatted_time }"
             machine.user = user
             machine.save()
@@ -452,7 +455,8 @@ def machine_book(request):
         else:
             new_time = now + timedelta(hours=booking_date)
             formatted_time = new_time.strftime("%d-%m-%Y %H:%M")
-            machine = MachineList.objects.get(ip_address=ip_address)
+            # machine = MachineList.objects.get(ip_address=ip_address)
+            machine = MachineList.objects.get(serial_no=sn)
             machine.book_date = f"{ formatted_time }"
             machine.user = user
             machine.save()
@@ -465,7 +469,8 @@ def machine_book(request):
         else:
             new_time = now + timedelta(days=booking_date)
             formatted_time = new_time.strftime("%d-%m-%Y %H:%M")
-            machine = MachineList.objects.get(ip_address=ip_address)
+            # machine = MachineList.objects.get(ip_address=ip_address)
+            machine = MachineList.objects.get(serial_no=sn)
             machine.book_date = f"{ formatted_time }"
             machine.user = user
             machine.save()
