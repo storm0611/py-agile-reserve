@@ -5,7 +5,6 @@ from . import views
 urlpatterns = [
     # public
     path('', views.index_view, name='index'),
-    path('scan', views.scan, name='scan'),
     # private
     path('get_suggested_strong_password', views.get_suggested_strong_password, name='get_suggested_strong_password'),
     # auth

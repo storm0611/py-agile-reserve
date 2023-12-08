@@ -102,4 +102,24 @@
     </div>
   </main>
 
+  <a class="refresh-button" href="{% url 'admin_active_index' %}">
+    <style>
+      .refresh-button {
+        position: fixed;
+        bottom: 50px;
+        right: 20px;
+        z-index: 100;
+        padding: 10px 20px;
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: #333333;
+        cursor: pointer;
+      }
+    </style>
+    <i class="fas fa-sync-alt">Scan Device</i>
+  </a>
+
   {% include 'templates_includes/active_includes/active_footer.html' %}

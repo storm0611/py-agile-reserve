@@ -209,221 +209,222 @@ def main():
         if not os.path.isfile(hostnameFile):
             print('    ERROR: [' + hostnameFile + '] is not a valid file...')
             exit()
-        overrideFileList = []
-        if len(sys.argv) > 5:
-            for overrideFile in sys.argv[5:]:
-                if not os.path.isfile(overrideFile):
-                    print('    ERROR: [' + overrideFile + '] is not a valid file...')
-                else:
-                    overrideFileList.append(overrideFile)
-        # start scan
-        elapsed_time = 0
-        start_time = time.time()
-        dictDetectedDevices = {}
-        dictDeviceInfo = {}
-        knownUsers = []
-        hostNames = []
-        refreshList = 0
-        heartBeat = True
-        while (True):
-            print('\n\n')
-            # initialize lists every interval
-            hostNames = getKnownList(hostnameFile)
-            dictDetectedDevices = {}
-            dictIpAddresses = {}
-            getDetectedList(dictDetectedDevices, dictIpAddresses, 3, deviceFile)
-            deleteList = []
-            for device in dictDeviceInfo:
-                if device not in dictDetectedDevices:
-                    deleteList.append(device)
-            for device in deleteList:
-                if device in dictDeviceInfo:
-                    del dictDeviceInfo[device]
-            if refreshList > 0:
-                refreshList = refreshList - 1
-            else:
-                knownUsers = getKnownList(usersFile)
-                refreshList = 100
-            # scan priority devices
-            deviceInfoChanged = False
-            fileText = []
-            activeDevicesRow = []
-            inactiveDevicesRow = []
-            for dIDN in dictDetectedDevices:
-                ipAddress = dictIpAddresses[dIDN]
-                print('Checking: ' + ipAddress)
-                pollTimeout = 5
-                if dictDetectedDevices[dIDN] > 0:
-                    dictDetectedDevices[dIDN] = dictDetectedDevices[dIDN] - 1
-                else:
-                    pollTimeout = 1
-                # get device details
-                deviceHostName = 'NO_HOSTNAME_' + ipAddress
-                try:
-                    deviceHostName = getHostName(ipAddress, hostNames)
-                    deviceHostName = deviceHostName.upper()
-                except:
-                    deviceHostName = 'NO_HOSTNAME_' + ipAddress
-                # poll device details
-                idnReply = ''
-                lockReply = ''
-                usersReply = ''
-                optionsReply = ''
-                validPort = 0
-                for port in [5555, 5025]:
-                    idnReply = pollDevice(ipAddress, port, '*IDN?', pollTimeout)
-                    idnReply = idnReply.strip()
-                    if idnReply != '':
-                        validPort = port
-                        break
-                if idnReply != '':
-                    deviceName = ''
-                    try:
-                        deviceName = idnReply.split(',')[1].strip()
-                    except:
-                        deviceName = ''
-                    deviceID = ''
-                    try:
-                        deviceID = idnReply.split(',')[2].strip()
-                    except:
-                        deviceID = ''
-                    if deviceName != '':
-                        if deviceName not in ['PR100', 'DDF007', 'EM100', 'EM100XT', 'DDF1555']:
-                            lockReply = pollDevice(ipAddress, validPort, 'SYST:LOCK:OWN?', 1)
-                            lockReply = lockReply.replace('"', '').strip()
-                        if deviceName not in ['SMW200A', 'SYS-SD5', 'SMU200A']:
-                            usersReply = pollDevice(ipAddress, validPort, 'TRAC:UDP?', pollTimeout)
-                        optionsReply = pollDevice(ipAddress, validPort, '*OPT?', pollTimeout)
-                else:
-                    deviceName = ''
-                    deviceID = ''
-                    lockReply = ''
-                    usersReply = ''
-                    optionsReply = ''
-                # prepare row text based on polled data
-                if idnReply == '':
-                    idnReply = '(NO REPLY)'
-                else:
-                    dictDetectedDevices[dIDN] = 3
-                if lockReply == '':
-                    lockReply = 'NONE'
-                if lockReply != 'NONE':
-                    lockReply = getUserName(lockReply, knownUsers, hostNames)
-                if usersReply != '':
-                    for count in range(1,21):
-                        usersReply = usersReply.replace(str(count).zfill(3), 'XXXXX_USER_XXXXX')
-                    userList = usersReply.split('XXXXX_USER_XXXXX')
-                    usersReply = ''
-                    users = []
-                    for user in userList:
-                        if not user.startswith('DEF'):
-                            userHostName = getUserName(user.split(',')[0].strip().replace('"', ''), knownUsers, hostNames)
-                            if len(userHostName) > 0 and not userHostName.startswith('DEF') and userHostName not in usersReply:
-                                usersReply = usersReply + '<b>' + userHostName + '</b><br>'
-                    if usersReply.endswith('<br>'):
-                        usersReply = usersReply.rsplit('<br>', 1)[0]
-                else:
-                    usersReply = '(NONE)'
-                # table row
-                rowString = "{"
-                # device
-                rowString = rowString + '"deviceName"' + ':' + '"' + deviceName + '"' + r','
-                # fw version
-                fwVersion = ''
-                try:
-                    fwVersion = idnReply.split(',')[3].split('-')[0]
-                except:
-                    fwVersion = ''
-                rowString = rowString + '"fwVersion"' + ':' + '"' + fwVersion  + '"' + r','
-                # id/serial number
-                rowString = rowString + '"deviceID"' + ':' + '"' + deviceID + '"' + r','
-                # host name
-                if 'NO_HOSTNAME_' in deviceHostName:
-                    rowString = rowString +'"deviceHostName"' + ':' + '"' + deviceHostName + '"' + r','
-                else:
-                    rowString = rowString + '"deviceHostName"'+ ':' + '"'  + deviceHostName + '"' + r','
-                # current ip: if none, set to black; then set previous ip to bold
-                rowString = rowString + '"ipAddress"' + ':' + '"' + ipAddress + '"' + r','
-                # idn: if not matched to id/serial number, set to red
-                rowString = rowString + '"idnReply"'+ ':' + '"'  + idnReply + '"' + r','
-                # lock: if none, set to black
-                if lockReply == 'NONE':
-                    rowString = rowString + '"lockReply"'+ ':' + '"' + lockReply + '"' + r','
-                else:
-                    rowString = rowString + '"lockReply"' + ':' + '"'+ lockReply + '"' + r','
-                # users
-                rowString = rowString + '"usersReply"' + ':' + '"' + usersReply + '"' + r','
-                # options
-                rowString = rowString + '"optionsReply"'+ ':' + '"'  + optionsReply + '"' + '}'
-                # end row
-                # if locked: set all to red
-                if lockReply != 'NONE':
-                    rowString = rowString.replace('0000FF', 'FF0000').replace('000000', 'FF0000')
-                # if no idn: set all to gray
-                if idnReply == '(NO REPLY)':
-                    rowString = rowString.replace('0000FF', '808080').replace('000000', '808080').replace('FF0000', '808080')
-                    inactiveDevicesRow.append(rowString)
-                else:
-                    activeDevicesRow.append(rowString)
-                    # check any change in device info
-                    if dIDN in dictDeviceInfo:
-                        deviceInfoIp = dictDeviceInfo[dIDN][0]
-                        deviceInfoFw = dictDeviceInfo[dIDN][1]
-                        if ipAddress != '(NO REPLY)' and ipAddress != deviceInfoIp:
-                            deviceInfoIp = ipAddress
-                            deviceInfoChanged = True
-                            print(dIDN + ' IP Address Changed...')
-                        if fwVersion != '' and fwVersion != deviceInfoFw:
-                            deviceInfoFw = fwVersion
-                            deviceInfoChanged = True
-                            print(dIDN + ' Firmware Changed...')
-                        dictDeviceInfo[dIDN] = [deviceInfoIp, deviceInfoFw]
-                    else:
-                        dictDeviceInfo[dIDN] = [ipAddress, fwVersion]
-                        deviceInfoChanged = True
-                time.sleep(0.2)
-            fileText = fileText + activeDevicesRow
-            fileText = fileText + inactiveDevicesRow
-            # end of table
-            for test in fileText:
-                print("fileText:", test)
-                test = json.loads(test)
-                ip_address = test["ipAddress"]
+        # overrideFileList = []
+        # if len(sys.argv) > 5:
+        #     for overrideFile in sys.argv[5:]:
+        #         if not os.path.isfile(overrideFile):
+        #             print('    ERROR: [' + overrideFile + '] is not a valid file...')
+        #         else:
+        #             overrideFileList.append(overrideFile)
+        # # start scan
+        # elapsed_time = 0
+        # start_time = time.time()
+        # dictDetectedDevices = {}
+        # dictDeviceInfo = {}
+        # knownUsers = []
+        # hostNames = []
+        # refreshList = 0
+        # heartBeat = True
+        # while (True):
+        #     print('\n\n')
+        #     # initialize lists every interval
+        #     hostNames = getKnownList(hostnameFile)
+        #     dictDetectedDevices = {}
+        #     dictIpAddresses = {}
+        #     getDetectedList(dictDetectedDevices, dictIpAddresses, 3, deviceFile)
+        #     deleteList = []
+        #     for device in dictDeviceInfo:
+        #         if device not in dictDetectedDevices:
+        #             deleteList.append(device)
+        #     for device in deleteList:
+        #         if device in dictDeviceInfo:
+        #             del dictDeviceInfo[device]
+        #     if refreshList > 0:
+        #         refreshList = refreshList - 1
+        #     else:
+        #         knownUsers = getKnownList(usersFile)
+        #         refreshList = 100
+        #     # scan priority devices
+        #     deviceInfoChanged = False
+        #     fileText = []
+        #     activeDevicesRow = []
+        #     inactiveDevicesRow = []
+        #     for dIDN in dictDetectedDevices:
+        #         ipAddress = dictIpAddresses[dIDN]
+        #         print('Checking: ' + ipAddress)
+        #         pollTimeout = 5
+        #         if dictDetectedDevices[dIDN] > 0:
+        #             dictDetectedDevices[dIDN] = dictDetectedDevices[dIDN] - 1
+        #         else:
+        #             pollTimeout = 1
+        #         # get device details
+        #         deviceHostName = 'NO_HOSTNAME_' + ipAddress
+        #         try:
+        #             deviceHostName = getHostName(ipAddress, hostNames)
+        #             deviceHostName = deviceHostName.upper()
+        #         except:
+        #             deviceHostName = 'NO_HOSTNAME_' + ipAddress
+        #         # poll device details
+        #         idnReply = ''
+        #         lockReply = ''
+        #         usersReply = ''
+        #         optionsReply = ''
+        #         validPort = 0
+        #         for port in [5555, 5025]:
+        #             idnReply = pollDevice(ipAddress, port, '*IDN?', pollTimeout)
+        #             idnReply = idnReply.strip()
+        #             if idnReply != '':
+        #                 validPort = port
+        #                 break
+        #         if idnReply != '':
+        #             deviceName = ''
+        #             try:
+        #                 deviceName = idnReply.split(',')[1].strip()
+        #             except:
+        #                 deviceName = ''
+        #             deviceID = ''
+        #             try:
+        #                 deviceID = idnReply.split(',')[2].strip()
+        #             except:
+        #                 deviceID = ''
+        #             if deviceName != '':
+        #                 if deviceName not in ['PR100', 'DDF007', 'EM100', 'EM100XT', 'DDF1555']:
+        #                     lockReply = pollDevice(ipAddress, validPort, 'SYST:LOCK:OWN?', 1)
+        #                     lockReply = lockReply.replace('"', '').strip()
+        #                 if deviceName not in ['SMW200A', 'SYS-SD5', 'SMU200A']:
+        #                     usersReply = pollDevice(ipAddress, validPort, 'TRAC:UDP?', pollTimeout)
+        #                 optionsReply = pollDevice(ipAddress, validPort, '*OPT?', pollTimeout)
+        #         else:
+        #             deviceName = ''
+        #             deviceID = ''
+        #             lockReply = ''
+        #             usersReply = ''
+        #             optionsReply = ''
+        #         # prepare row text based on polled data
+        #         if idnReply == '':
+        #             idnReply = '(NO REPLY)'
+        #         else:
+        #             dictDetectedDevices[dIDN] = 3
+        #         if lockReply == '':
+        #             lockReply = 'NONE'
+        #         if lockReply != 'NONE':
+        #             lockReply = getUserName(lockReply, knownUsers, hostNames)
+        #         if usersReply != '':
+        #             for count in range(1,21):
+        #                 usersReply = usersReply.replace(str(count).zfill(3), 'XXXXX_USER_XXXXX')
+        #             userList = usersReply.split('XXXXX_USER_XXXXX')
+        #             usersReply = ''
+        #             users = []
+        #             for user in userList:
+        #                 if not user.startswith('DEF'):
+        #                     userHostName = getUserName(user.split(',')[0].strip().replace('"', ''), knownUsers, hostNames)
+        #                     if len(userHostName) > 0 and not userHostName.startswith('DEF') and userHostName not in usersReply:
+        #                         usersReply = usersReply + '<b>' + userHostName + '</b><br>'
+        #             if usersReply.endswith('<br>'):
+        #                 usersReply = usersReply.rsplit('<br>', 1)[0]
+        #         else:
+        #             usersReply = '(NONE)'
+        #         # table row
+        #         rowString = "{"
+        #         # device
+        #         rowString = rowString + '"deviceName"' + ':' + '"' + deviceName + '"' + r','
+        #         # fw version
+        #         fwVersion = ''
+        #         try:
+        #             fwVersion = idnReply.split(',')[3].split('-')[0]
+        #         except:
+        #             fwVersion = ''
+        #         rowString = rowString + '"fwVersion"' + ':' + '"' + fwVersion  + '"' + r','
+        #         # id/serial number
+        #         rowString = rowString + '"deviceID"' + ':' + '"' + deviceID + '"' + r','
+        #         # host name
+        #         if 'NO_HOSTNAME_' in deviceHostName:
+        #             rowString = rowString +'"deviceHostName"' + ':' + '"' + deviceHostName + '"' + r','
+        #         else:
+        #             rowString = rowString + '"deviceHostName"'+ ':' + '"'  + deviceHostName + '"' + r','
+        #         # current ip: if none, set to black; then set previous ip to bold
+        #         rowString = rowString + '"ipAddress"' + ':' + '"' + ipAddress + '"' + r','
+        #         # idn: if not matched to id/serial number, set to red
+        #         rowString = rowString + '"idnReply"'+ ':' + '"'  + idnReply + '"' + r','
+        #         # lock: if none, set to black
+        #         if lockReply == 'NONE':
+        #             rowString = rowString + '"lockReply"'+ ':' + '"' + lockReply + '"' + r','
+        #         else:
+        #             rowString = rowString + '"lockReply"' + ':' + '"'+ lockReply + '"' + r','
+        #         # users
+        #         rowString = rowString + '"usersReply"' + ':' + '"' + usersReply + '"' + r','
+        #         # options
+        #         rowString = rowString + '"optionsReply"'+ ':' + '"'  + optionsReply + '"' + '}'
+        #         # end row
+        #         # if locked: set all to red
+        #         if lockReply != 'NONE':
+        #             rowString = rowString.replace('0000FF', 'FF0000').replace('000000', 'FF0000')
+        #         # if no idn: set all to gray
+        #         if idnReply == '(NO REPLY)':
+        #             rowString = rowString.replace('0000FF', '808080').replace('000000', '808080').replace('FF0000', '808080')
+        #             inactiveDevicesRow.append(rowString)
+        #         else:
+        #             activeDevicesRow.append(rowString)
+        #             # check any change in device info
+        #             if dIDN in dictDeviceInfo:
+        #                 deviceInfoIp = dictDeviceInfo[dIDN][0]
+        #                 deviceInfoFw = dictDeviceInfo[dIDN][1]
+        #                 if ipAddress != '(NO REPLY)' and ipAddress != deviceInfoIp:
+        #                     deviceInfoIp = ipAddress
+        #                     deviceInfoChanged = True
+        #                     print(dIDN + ' IP Address Changed...')
+        #                 if fwVersion != '' and fwVersion != deviceInfoFw:
+        #                     deviceInfoFw = fwVersion
+        #                     deviceInfoChanged = True
+        #                     print(dIDN + ' Firmware Changed...')
+        #                 dictDeviceInfo[dIDN] = [deviceInfoIp, deviceInfoFw]
+        #             else:
+        #                 dictDeviceInfo[dIDN] = [ipAddress, fwVersion]
+        #                 deviceInfoChanged = True
+        #         time.sleep(0.2)
+        #     fileText = fileText + activeDevicesRow
+        #     fileText = fileText + inactiveDevicesRow
+        #     # end of table
+        #     for test in fileText:
+        #         print("fileText:", test)
+        #         test = json.loads(test)
+        #         ip_address = test["ipAddress"]
 
-                cursor.execute('SELECT COUNT(*) FROM "AgileReserveSys_machinelist"')
-                count = cursor.fetchone()
-                number = count[0]
+        #         cursor.execute('SELECT COUNT(*) FROM "AgileReserveSys_machinelist"')
+        #         count = cursor.fetchone()
+        #         number = count[0]
 
 
-                cursor.execute('SELECT * FROM "AgileReserveSys_machinelist" WHERE serial_no=%s', (test["deviceID"],))
+        #         cursor.execute('SELECT * FROM "AgileReserveSys_machinelist" WHERE serial_no=%s', (test["deviceID"],))
 
-                existing_ip = cursor.fetchone()
-                print(existing_ip)
+        #         existing_ip = cursor.fetchone()
+        #         print(existing_ip)
 
-                if existing_ip:
-                    query = 'UPDATE "AgileReserveSys_machinelist" SET device_name = %s, fw_version = %s, ip_address = %s, device_host_name = %s, identification = %s, options = %s, lock_reply = %s, users_reply = %s WHERE serial_no = %s'
+        #         if existing_ip:
+        #             query = 'UPDATE "AgileReserveSys_machinelist" SET device_name = %s, fw_version = %s, ip_address = %s, device_host_name = %s, identification = %s, options = %s, lock_reply = %s, users_reply = %s WHERE serial_no = %s'
 
-                    cursor.execute(query, (test["deviceName"], test["fwVersion"], test["ipAddress"], test["deviceHostName"], test["idnReply"], test["optionsReply"], test["lockReply"], test["usersReply"], test["deviceID"] ))
-                else:
-                    query = 'INSERT INTO "AgileReserveSys_machinelist" (id, device_name, fw_version, serial_no, device_host_name, ip_address, identification, options, lock_reply, users_reply) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+        #             cursor.execute(query, (test["deviceName"], test["fwVersion"], test["ipAddress"], test["deviceHostName"], test["idnReply"], test["optionsReply"], test["lockReply"], test["usersReply"], test["deviceID"] ))
+        #         else:
+        #             query = 'INSERT INTO "AgileReserveSys_machinelist" (id, device_name, fw_version, serial_no, device_host_name, ip_address, identification, options, lock_reply, users_reply) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
 
-                    new_id = int(number) + 1
+        #             new_id = int(number) + 1
 
-                    cursor.execute(query, (new_id, test["deviceName"], test["fwVersion"], test["deviceID"], test["deviceHostName"], test["ipAddress"], test["idnReply"], test["optionsReply"], test["lockReply"], test["usersReply"]))
-                conn.commit()
+        #             cursor.execute(query, (new_id, test["deviceName"], test["fwVersion"], test["deviceID"], test["deviceHostName"], test["ipAddress"], test["idnReply"], test["optionsReply"], test["lockReply"], test["usersReply"]))
+        #         conn.commit()
 
             
-            # write to html
-            # writeToHTML(htmlFile, fileText)
-            # update autotest environment override file
-            if deviceInfoChanged and len(overrideFileList) > 0:
-                for enviFile in overrideFileList:
-                    updateAutotestEnvironmentOverride(enviFile, dictDeviceInfo)
-                    print(enviFile + ' Updated...')
-            # update console timestamp
-            #os.system('cls')
-            print('Update Timestamp: ' + str(datetime.datetime.now()))
-            time.sleep(0.2)
+        #     # write to html
+        #     # writeToHTML(htmlFile, fileText)
+        #     # update autotest environment override file
+        #     if deviceInfoChanged and len(overrideFileList) > 0:
+        #         for enviFile in overrideFileList:
+        #             updateAutotestEnvironmentOverride(enviFile, dictDeviceInfo)
+        #             print(enviFile + ' Updated...')
+        #     # update console timestamp
+        #     #os.system('cls')
+        #     print('Update Timestamp: ' + str(datetime.datetime.now()))
+        #     time.sleep(0.2)
+            ####
 
     #-------------------------------------------------------------------------------
 

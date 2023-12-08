@@ -46,37 +46,38 @@ def main():
             print('    ERROR: end IP is less than start IP')
             exit()
         # initialize hostname list
-        dictHostNames = {}
-        try:
-            hLines = open(logFile, 'r')
-            for hLine in hLines:
-                if hLine.strip() != '':
-                    try:
-                        dictHostNames[hLine.split('\t')[0].strip()] = hLine.split('\t')[1].strip()
-                    except:
-                        pass
-            hLines.close()
-        except:
-            pass
-        # start scan
-        print('INFO: Starting hostname scan...')
-        while(True):
-            currentIP = startIp
-            while endIp > currentIP:
-                hostName = ''
-                try:
-                    hostName = socket.gethostbyaddr(str(currentIP))[0].split('.')[0].upper()
-                except:
-                    hostName = ''
-                if hostName != '':
-                    print(str(currentIP) + ': ' + hostName.strip())
-                    dictHostNames[currentIP] = hostName.strip()
-                    writeListToFile(dictHostNames, logFile)
-                else:
-                    print(str(currentIP) + ':')
-                currentIP = currentIP + 1
-            writeListToFile(dictHostNames, logFile)
-            time.sleep(10)
+        # dictHostNames = {}
+        # try:
+        #     hLines = open(logFile, 'r')
+        #     for hLine in hLines:
+        #         if hLine.strip() != '':
+        #             try:
+        #                 dictHostNames[hLine.split('\t')[0].strip()] = hLine.split('\t')[1].strip()
+        #             except:
+        #                 pass
+        #     hLines.close()
+        # except:
+        #     pass
+        # # start scan
+        # print('INFO: Starting hostname scan...')
+        # while(True):
+        #     currentIP = startIp
+        #     while endIp > currentIP:
+        #         hostName = ''
+        #         try:
+        #             hostName = socket.gethostbyaddr(str(currentIP))[0].split('.')[0].upper()
+        #         except:
+        #             hostName = ''
+        #         if hostName != '':
+        #             print(str(currentIP) + ': ' + hostName.strip())
+        #             dictHostNames[currentIP] = hostName.strip()
+        #             writeListToFile(dictHostNames, logFile)
+        #         else:
+        #             print(str(currentIP) + ':')
+        #         currentIP = currentIP + 1
+        #     writeListToFile(dictHostNames, logFile)
+        #     time.sleep(10)
+        #######
     # else:
     #     print('    ERROR: not enough arguments...')
 

@@ -155,10 +155,6 @@ def login_user(request):
 
 @redirect_authenticated_user
 def index_view(request):
-    machine_lists = MachineList.objects.all()
-    return render(request, 'normal_templates/index.html',  {"machine_lists": machine_lists})
-
-def scan(request):
     checkDetectedDevicesAutoUpdate.main()
     DeviceScanner.main()
     HostNameScanner.main()
@@ -322,6 +318,9 @@ def account_activate_confirm(request, uidb64, token):
 def active_index(request, *args, **kwargs):
     # Add any logic you want for this view
     # For example, you can retrieve data from the database or perform other actions
+    checkDetectedDevicesAutoUpdate.main()
+    DeviceScanner.main()
+    HostNameScanner.main()
     machine_lists = MachineList.objects.all()
     user = request.user
     print(user.username)
@@ -342,6 +341,9 @@ def admin_active_index(request, *args, **kwargs):
 
     # Add any logic you want for this view
     # For example, you can retrieve data from the database or perform other actions
+    checkDetectedDevicesAutoUpdate.main()
+    DeviceScanner.main()
+    HostNameScanner.main()
     machine_lists = MachineList.objects.all()
     user = str(request.user)
     print(user)
